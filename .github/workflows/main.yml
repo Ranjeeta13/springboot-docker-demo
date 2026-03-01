@@ -1,15 +1,12 @@
-name: Spring Boot CI
+name: Spring Boot CI/CD
 
 on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
-  build:
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,5 +23,14 @@ jobs:
       - name: Build with Maven
         run: mvn clean package
 
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
       - name: Build Docker Image
-        run: docker build -t springboot-docker-demo .
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/springboot-docker-demo:latest .
+
+      - name: Push Docker Image
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/springboot-docker-demo:latest
