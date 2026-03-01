@@ -1,3 +1,5 @@
+[![Spring Boot CI/CD](https://github.com/Ranjeeta13/springboot-docker-demo/actions/workflows/main.yml/badge.svg)](https://github.com/Ranjeeta13/springboot-docker-demo/actions/workflows/main.yml)
+
 # 🚀 Spring Boot Dockerized Application
 
 This project demonstrates how to:
