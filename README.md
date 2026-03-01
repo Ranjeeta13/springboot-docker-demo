@@ -74,3 +74,5 @@ Push Code → GitHub runs workflow → Build → Test → Docker Build → Done
 ✅ Runs mvn clean package
 ✅ Builds Docker image
 ✅ Verifies build success
+
+Trigger CI
