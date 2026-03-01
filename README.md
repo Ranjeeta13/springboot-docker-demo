@@ -61,3 +61,16 @@ Example:
 ```
 docker run -p 9090:8080 springboot-app
 ```
+
+🧠GitHub Actions
+```
+Push Code → GitHub runs workflow → Build → Test → Docker Build → Done
+```
+
+🎯Workflow:
+
+✅ Runs on every push
+✅ Builds your Spring Boot app
+✅ Runs mvn clean package
+✅ Builds Docker image
+✅ Verifies build success
