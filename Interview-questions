@@ -1,0 +1,50 @@
+1️⃣ Spring Boot / Java Questions
+
+Explain the difference between @Component, @Service, and @Repository in Spring.
+How does Spring Boot auto-configuration work?
+What are Spring profiles, and how do you use them in application.properties?
+What is HikariCP, and why is it used in Spring Boot?
+How would you fix a Failed to load ApplicationContext error during tests?
+Difference between @SpringBootTest and @DataJpaTest.
+How does Spring Boot manage database connections with MySQL?
+
+2️⃣ Docker / Containerization Questions
+
+What is the difference between Docker container and Docker image?
+Explain how Docker Compose networking works for multiple containers.
+How can you ensure your Spring Boot app waits for MySQL container to be ready?
+How would you pass environment variables to a Docker container?
+Difference between local Docker run vs Docker Compose setup.
+How do healthchecks in Docker help with container orchestration?
+
+3️⃣ Database / MySQL Questions
+
+How would you configure Spring Boot to connect to MySQL running in Docker?
+What is the difference between create, update, validate in spring.jpa.hibernate.ddl-auto?
+What is H2 in-memory database, and when would you use it?
+Explain JDBC URL parameters like useSSL=false and serverTimezone=UTC.
+How do you solve a Communications link failure between Spring Boot and MySQL container?
+
+4️⃣ CI/CD & Docker Hub Questions
+
+How does a CI/CD pipeline authenticate with Docker Hub?
+What is the difference between username/password and personal access token for Docker Hub login?
+Explain how you would set up a GitHub Actions workflow to build, test, and push Docker images.
+What is the role of secrets / environment variables in CI/CD pipelines?
+How do you handle tests in CI/CD that require a database?
+
+5️⃣ Networking / NAT / PAT Questions
+
+What is NAT, and why is it used in networking?
+What is PAT (Port Address Translation) and how does it differ from NAT?
+How would you access a Docker container from your host machine?
+How does Docker bridge network relate to NAT and PAT?
+Scenario: Multiple Spring Boot apps need to share one public IP, how would you set up networking?
+
+6️⃣ Scenario / Problem-Solving Questions
+
+Your Spring Boot app fails with Cannot obtain JDBC connection. How would you debug it?
+You push a commit to GitHub, but git push is rejected due to “non-fast-forward”. How do you fix it safely?
+Your CI/CD pipeline fails because tests cannot connect to MySQL. How would you fix it without touching the production database?
+Docker Compose logs show your app container crashes because MySQL isn’t ready yet. How do you solve it?
+You want your tests to run fast and independently of Docker containers. What approach would you take?
