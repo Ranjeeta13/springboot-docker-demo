@@ -1,10 +1,10 @@
-package com.github.docker;
+package io.ranjeeta.app;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class DockerAppApplicationTests {
+class DockerizedAppApplicationTests {
 
 	@Test
 	void contextLoads() {
