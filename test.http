@@ -20,4 +20,4 @@ GET http://localhost:8080/users
 ###
 
 ### Delete User (change id if needed)
-DELETE http://localhost:8080/users/2
+DELETE http://localhost:8080/users/3
