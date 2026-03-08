@@ -1,8 +1,8 @@
-package io.ranjeeta.app.repository;
+package com.example.userservice.repository;
 
-import io.ranjeeta.app.model.User;
+import com.example.userservice.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-
+    User findByName(String name);
 }
