@@ -65,3 +65,6 @@ ALTER TABLE users AUTO_INCREMENT = 1;
     You should either add a favicon
     or
     silently handle favicon requests (to avoid noisy logs).
+---------------------------------------------------------------------------------------------------
+“Why avoid Map in PATCH APIs?”
+Using Map loses type safety and validation support. In production systems we usually prefer DTO-based patch requests and update only non-null fields.

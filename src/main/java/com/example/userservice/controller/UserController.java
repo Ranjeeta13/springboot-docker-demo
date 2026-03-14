@@ -1,9 +1,12 @@
 package com.example.userservice.controller;
 
+import com.example.userservice.dto.UserPatchRequest;
 import com.example.userservice.dto.UserRequest;
 import com.example.userservice.dto.UserResponse;
 import com.example.userservice.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,27 +23,84 @@ public class UserController {
     }
 
    @PostMapping("/createUser")
-   public UserResponse createUser(@Valid @RequestBody UserRequest userRequest) {
-       return userService.createUser(userRequest);
+   public ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserRequest userRequest) {
+       UserResponse userResponse=userService.createUser(userRequest);
+       return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
 
    }
 
    @PostMapping("/createUsers")
-   public List<UserResponse> createUsers(@Valid @RequestBody List<UserRequest> userRequests) {
-        return userService.createUsers(userRequests);
+   public ResponseEntity<List<UserResponse>> createUsers(@Valid @RequestBody List<UserRequest> userRequests) {
+       if (userRequests == null || userRequests.isEmpty()) {
+           return ResponseEntity
+                   .badRequest()
+                   .build();
+       }
+       List<UserResponse> userResponseList=userService.createUsers(userRequests);
+        return ResponseEntity.status(HttpStatus.CREATED).body(userResponseList);
    }
 
    @GetMapping("/{id}")
-   public UserResponse getUser(@PathVariable Long id) {
-        return userService.getUserById(id);
+   public ResponseEntity<UserResponse> getUser(@PathVariable Long id) {
+
+        UserResponse userResponse= userService.getUserById(id);
+        if(userResponse==null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(userResponse);
    }
 
    @GetMapping
-   public List<UserResponse> getAllUsers() {
-        return userService.getAllUsers();
+   public ResponseEntity<List<UserResponse>> getAllUsers() {
+
+        List<UserResponse> userResponses= userService.getAllUsers();
+        if(userResponses==null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(userResponses);
    }
 
-  /* Controller -Entity X(not recommended)
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+
+        userService.deleteUserById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteAllUsers() {
+
+        userService.deleteAllUsers();
+
+        return ResponseEntity.noContent().build();
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @Valid @RequestBody UserRequest userRequest) {
+        UserResponse userResponse=userService.updateUser(id, userRequest);
+        return ResponseEntity.ok(userResponse);
+    }
+   //DTO-based patching
+   @PatchMapping("/{id}")
+   public ResponseEntity<UserResponse> updateUserPartially(@PathVariable Long id, @Valid @RequestBody UserPatchRequest userPatchRequest) {
+        UserResponse patchedUser = userService.patchUser(id,userPatchRequest);
+        return ResponseEntity.ok(patchedUser);
+   }
+
+   /*
+   @PatchMapping("/{id}")
+   public ResponseEntity<UserResponse> updateUserPartially(@Valid @PathVariable Long id, @RequestBody Map<String,Object> updates) {
+
+        UserResponse patchedUser = userService.patchUser(id,updates);
+        return ResponseEntity.ok(patchedUser);
+   }
+    //    @PatchMapping("/{id}/email")
+    // public ResponseEntity<UserResponse> updateEmail(
+    //         @PathVariable Long id,
+    //         @RequestBody String email) {
+    //
+    //     return ResponseEntity.ok(userService.updateEmail(id, email));
+    // }
+   Controller -Entity X(not recommended)
    @PostMapping
    public User createUser(@Valid @RequestBody User user){
         return userService.createUser(user);
@@ -53,16 +113,6 @@ public class UserController {
     public User getUser(@PathVariable Long id){
         return userService.getUserById(id);
     }*/
-
-    @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id){
-        userService.deleteUserById(id);
-    }
-
-    @DeleteMapping
-    public void deleteAllUsers(){
-        userService.deleteAllUsers();
-    }
 
     /*
     Controller to repository not recommended

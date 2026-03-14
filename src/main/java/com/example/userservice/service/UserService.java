@@ -1,10 +1,13 @@
 package com.example.userservice.service;
 
+import com.example.userservice.dto.UserPatchRequest;
 import com.example.userservice.dto.UserRequest;
 import com.example.userservice.dto.UserResponse;
 import com.example.userservice.entity.User;
+import jakarta.validation.Valid;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserService {
 
@@ -21,4 +24,8 @@ public interface UserService {
 
     void deleteUserById(Long id);
 
+    //UserResponse patchUser(Long id, Map<String, Object> updates);
+    UserResponse updateUser(Long id,UserRequest userRequest);
+
+    UserResponse patchUser(Long id, UserPatchRequest userPatchRequest);
 }

@@ -39,9 +39,33 @@ GET http://localhost:8080/users/2
 ###
 
 ### Delete User (change id if needed)
-DELETE http://localhost:8080/users/3
+DELETE http://localhost:8080/users/13
 ###
 
 ### Delete All Users
 DELETE http://localhost:8080/users
+
+###
+
+### Patch
+PATCH http://localhost:8080/users/11
+Content-Type: application/json
+
+{
+  "email": "johny.david@email.com",
+  "age": 30
+}
+
+###
+
+### Put users
+PUT http://localhost:8080/users/12
+Content-Type: application/json
+
+{
+  "name": "Ranjeeta",
+  "email": "ranjeetapathak13@email.com",
+  "age": 23
+}
+###
 
