@@ -48,3 +48,20 @@ You push a commit to GitHub, but git push is rejected due to “non-fast-forward
 Your CI/CD pipeline fails because tests cannot connect to MySQL. How would you fix it without touching the production database?
 Docker Compose logs show your app container crashes because MySQL isn’t ready yet. How do you solve it?
 You want your tests to run fast and independently of Docker containers. What approach would you take?
+
+7️⃣Why IDs don’t reset automatically:
+When you delete all rows with DELETE FROM users;, the AUTO_INCREMENT counter does not reset. So the next insert continues from the last value (e.g., 14, 15, 16).
+This is because databases ensure IDs remain unique over the table’s lifetime and avoid accidental reuse.
+
+To reset IDs to 1, you need:
+ALTER TABLE users AUTO_INCREMENT = 1;
+
+    Is it bad practice?
+
+    Not a problem functionally. Your API works perfectly.
+    But logging errors for something harmless is not ideal.
+
+    For production-quality projects:
+    You should either add a favicon
+    or
+    silently handle favicon requests (to avoid noisy logs).

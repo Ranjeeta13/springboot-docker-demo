@@ -19,28 +19,33 @@ public class UserServiceImpl implements UserService {
 
     private final UserEventProducer userEventProducer;
 
-    public UserServiceImpl(UserRepository userRepository, UserEventProducer userEventProducer) {
+    private final UserMapper userMapper;
+
+    public UserServiceImpl(UserRepository userRepository, UserEventProducer userEventProducer, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.userEventProducer = userEventProducer;
+        this.userMapper = userMapper;
     }
 
     @Override
     public UserResponse createUser(UserRequest userRequest) {
-        User user = UserMapper.toEntity(userRequest);
+        //User user = UserMapper.toEntity(userRequest);
+        User user=userMapper.toEntity(userRequest);
         User userCreated = userRepository.save(user);
-        UserResponse response = UserMapper.toResponse(userCreated);
-        userEventProducer.sendUserCreatedEvent(response);
-        return response;
+        //UserResponse response = UserMapper.toResponse(userCreated);
+        UserResponse userResponse = userMapper.toResponse(userCreated);
+        userEventProducer.sendUserCreatedEvent(userResponse);
+        return userResponse;
     }
 
     @Override
     public List<UserResponse> createUsers(List<UserRequest> userRequests) {
         List<User> users = userRequests.stream()
-                .map(UserMapper::toEntity)
+                .map(userMapper::toEntity)
                 .toList();
         List<User> usersCreated = userRepository.saveAll(users);
         List<UserResponse> responses = usersCreated.stream()
-                .map(UserMapper::toResponse)
+                .map(userMapper::toResponse)
                 .collect(Collectors.toList());
         responses.forEach(userEventProducer::sendUserCreatedEvent);
         return responses;
@@ -50,14 +55,14 @@ public class UserServiceImpl implements UserService {
     public List<UserResponse> getAllUsers() {
         return userRepository.findAll()
                 .stream()
-                .map(UserMapper::toResponse)
+                .map(userMapper::toResponse)
                 .collect(Collectors.toList());
     }
 
     @Override
     public UserResponse getUserById(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
-        return UserMapper.toResponse(user);
+        return userMapper.toResponse(user);
     }
 
     @Override
@@ -66,7 +71,7 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new UserNotFoundException(name);
         }
-        return UserMapper.toResponse(user);
+        return userMapper.toResponse(user);
     }
 
     @Override
