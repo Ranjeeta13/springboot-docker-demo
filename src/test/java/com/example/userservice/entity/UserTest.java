@@ -18,7 +18,7 @@ class UserTest {
     @Test
     public void userTest(){
        List<User> users = userRepository.findAll();
-       System.out.println(users);
+       System.out.println(users.getFirst().getName());
        Assertions.assertNotNull(users);
     }
 }
