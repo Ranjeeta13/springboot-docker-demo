@@ -52,8 +52,7 @@ PATCH http://localhost:8080/users/11
 Content-Type: application/json
 
 {
-  "email": "johny.david@email.com",
-  "age": 30
+  "email": "ranjeetapathak13@email.com"
 }
 
 ###
