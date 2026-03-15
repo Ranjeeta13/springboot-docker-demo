@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.util.List;
 
@@ -27,14 +29,21 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserResponse createUser(UserRequest userRequest) {
-
+        // Transient
         User user = userMapper.toEntity(userRequest);
 
+        // Persistent / Managed
         User savedUser = userRepository.save(user);
 
         UserResponse response = userMapper.toResponse(savedUser);
 
-        userEventProducer.sendUserCreatedEvent(response);
+        // Send Kafka event after commit (non-deprecated)
+        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+            @Override
+            public void afterCommit() {
+                userEventProducer.sendUserCreatedEvent(response);
+            }
+        });
 
         return response;
     }
@@ -42,25 +51,34 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public List<UserResponse> createUsers(List<UserRequest> userRequests) {
-
+        // Transient
         List<User> users = userRequests.stream()
                 .map(userMapper::toEntity)
                 .toList();
 
+        // Persistent / Managed
         List<User> savedUsers = userRepository.saveAll(users);
 
         List<UserResponse> responses = savedUsers.stream()
                 .map(userMapper::toResponse)
                 .toList();
 
-        responses.forEach(userEventProducer::sendUserCreatedEvent);
+        // Send Kafka events after commit (non-deprecated)
+        responses.forEach(response ->
+                TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+                    @Override
+                    public void afterCommit() {
+                        userEventProducer.sendUserCreatedEvent(response);
+                    }
+                })
+        );
 
         return responses;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<UserResponse> getAllUsers() {
-
         return userRepository.findAll()
                 .stream()
                 .map(userMapper::toResponse)
@@ -68,33 +86,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserResponse getUserById(Long id) {
-
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
-
         return userMapper.toResponse(user);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserResponse getUserByName(String name) {
-
         User user = userRepository.findByName(name);
-
-        if (user == null) {
-            throw new UserNotFoundException(name);
-        }
-
+        if (user == null) throw new UserNotFoundException(name);
         return userMapper.toResponse(user);
     }
 
     @Override
     @Transactional
     public void deleteUserById(Long id) {
-
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
-
         userRepository.delete(user);
     }
 
@@ -107,28 +118,25 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserResponse updateUser(Long id, UserRequest userRequest) {
-
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
 
+        // Persistent / Managed
         modelMapper.map(userRequest, user);
 
         User updatedUser = userRepository.save(user);
-
         return userMapper.toResponse(updatedUser);
     }
 
     @Override
     @Transactional
     public UserResponse patchUser(Long id, UserPatchRequest userPatchRequest) {
-
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
 
         modelMapper.map(userPatchRequest, user);
 
         User updatedUser = userRepository.save(user);
-
         return userMapper.toResponse(updatedUser);
     }
 

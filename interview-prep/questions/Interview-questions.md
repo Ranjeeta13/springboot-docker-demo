@@ -66,5 +66,11 @@ ALTER TABLE users AUTO_INCREMENT = 1;
     or
     silently handle favicon requests (to avoid noisy logs).
 ---------------------------------------------------------------------------------------------------
+
 “Why avoid Map in PATCH APIs?”
 Using Map loses type safety and validation support. In production systems we usually prefer DTO-based patch requests and update only non-null fields.
+---------------------------------------------------------------------------------------------------
+
+spring.jpa.hibernate.ddl-auto=none , validate for prod
+spring.jpa.hibernate.ddl-auto=update create-drop for dev/local
+---------------------------------------------------------------------------------------------------
