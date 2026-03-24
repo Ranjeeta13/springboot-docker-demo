@@ -130,14 +130,14 @@ Kafka support has been integrated end-to-end:
 1. Added `spring-kafka` dependency in `pom.xml`.
 2. Added a producer service: `UserEventProducer`.
 3. On successful user creation in service layer, app publishes:
-  - Topic: `user_created`
-  - Event type: `USER_CREATED`
-  - Payload fields: `userId`, `name`, `email`, `age`
+Topic: `user_created`
+Event type: `USER_CREATED`
+Payload fields: `userId`, `name`, `email`, `age`
 4. Added Kafka producer properties in:
-  - `application.properties` (local)
-  - `application-docker.properties` (docker)
+`application.properties` (local)
+`application-docker.properties` (docker)
 5. Added Kafka broker service in `docker-compose.yml` and wired app with:
-  - `SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092`
+`SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092`
 
 ---
 

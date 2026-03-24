@@ -95,10 +95,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public UserResponse getUserByName(String name) {
-        User user = userRepository.findByName(name);
-        if (user == null) throw new UserNotFoundException(name);
-        return userMapper.toResponse(user);
+    public List<UserResponse> getUserByName(String name) {
+        List<User> users = userRepository.findByName(name);
+        return users.stream().map(userMapper::toResponse).toList();
     }
 
     @Override

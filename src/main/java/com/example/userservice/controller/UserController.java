@@ -40,23 +40,23 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userResponseList);
    }
 
-   @GetMapping("/{id}")
-   public ResponseEntity<UserResponse> getUser(@PathVariable Long id) {
+   @GetMapping("/id/{id}")
+   public ResponseEntity<UserResponse> getUserById(@PathVariable Long id) {
 
         UserResponse userResponse= userService.getUserById(id);
-        if(userResponse==null){
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(userResponse);
    }
+    @GetMapping("/name/{name}")
+    public ResponseEntity<List<UserResponse>> getUserByName(@PathVariable String name) {
+
+        List<UserResponse> userResponses= userService.getUserByName(name);
+        return ResponseEntity.ok(userResponses);
+    }
 
    @GetMapping
    public ResponseEntity<List<UserResponse>> getAllUsers() {
 
         List<UserResponse> userResponses= userService.getAllUsers();
-        if(userResponses==null){
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(userResponses);
    }
 
