@@ -25,7 +25,7 @@ class UserRepositoryTest {
 
     @Test
     void countUsersByRole() {
-        List<User> userList=userRepository.countUsersByRole(USER);
+        List<User> userList=userRepository.findUsersByRole(USER);
         for(User user:userList){
             System.out.println(user);
         }

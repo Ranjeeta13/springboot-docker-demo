@@ -13,7 +13,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findByNameContains(String name);
 
     @Query("select u from User u where u.role=?1" )
-    List<User> countUsersByRole(@Param("role") Role role );
+    List<User> findUsersByRole(@Param("role") Role role );
 
     @Query("select u.role, COUNT (u) from User u group by u.role" )
     List<Object[]> countAllRolesGrouped();
